@@ -26,3 +26,17 @@ View temperature, and humidity readings captured from Arduino on a mobile App
 | Time                | Temperature | Humidity | Source |
 | ------------------- | ----------- | -------- | ------ |
 | 2024-04-01-01:12:33 | 23.3        | 57.5     | Hall   |
+
+### Access patterns
+
+**1. Latest reading per source**
+
+```
+ SELECT *
+FROM   readings
+WHERE  source = '<source>'
+ORDER  BY datetime DESC
+LIMIT  1;  
+```
+
+
