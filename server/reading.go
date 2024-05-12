@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"time"
 
@@ -31,7 +30,7 @@ func GetLatest(source string) (Reading, error) {
 	rows, err := db.Query(`
 		SELECT * FROM readings
 		WHERE source = $1
-		ORDER BY DATETIME DESC LIMIT 1
+		ORDER BY time DESC LIMIT 1
 	`, source)
 	if err != nil {
 		return Reading{}, err
@@ -49,9 +48,25 @@ func GetLatest(source string) (Reading, error) {
 	return out, nil
 }
 
-func AddReading(val Reading) error {
-	fmt.Println(val)
-	// TODO: call sql query to insert the value as a row
+func AddReading(reading Reading) error {
+	//  call sql query to insert the value as a row
+	rows, err := db.Query(`
+	INSERT INTO readings
+	(time,
+	 temperature,
+	 humidity,
+	 source)
+    VALUES ($1,
+	 $2,
+	 $3,
+	 $4);
+	`, reading.Time, reading.Temperature, reading.Humidity, reading.Source)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+
 	// return error if query fails
 	return nil
 }

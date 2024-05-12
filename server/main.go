@@ -27,18 +27,37 @@ func health(w http.ResponseWriter, req *http.Request) {
 }
 
 func postReading(w http.ResponseWriter, req *http.Request) {
-	// TODO: parse request body and insert into db
-	reading := Reading{
-		Time:        time.Time{},
-		Temperature: 0,
-		Humidity:    0,
-		Source:      "",
+	if req.Method != http.MethodPost {
+		fmt.Fprintf(w, `Not allowed`)
+		return
 	}
-	err := AddReading(reading)
+
+	// parse request body and insert into db
+	var readings Reading
+	err := json.NewDecoder(req.Body).Decode(&readings)
 	if err != nil {
 		log.Println(err)
 		return
 	}
+
+	// insert reading based on current time
+	readings.Time = time.Now()
+	err = AddReading(readings)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	// return newly added reading as JSON to http response body
+	marhsalled, err := json.Marshal(readings)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	// TODO: select from db instead of hardcoded value
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Fprint(w, string(marhsalled))
 }
 
 func getLatest(w http.ResponseWriter, req *http.Request) {

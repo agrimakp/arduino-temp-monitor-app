@@ -39,4 +39,19 @@ ORDER  BY datetime DESC
 LIMIT  1;  
 ```
 
+## Development
 
+### Start database
+
+https://hub.docker.com/_/postgres
+
+```sh
+docker run -p 5432:5432  -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+```
+
+### Start server
+
+```sh
+cd server
+go run .
+```
