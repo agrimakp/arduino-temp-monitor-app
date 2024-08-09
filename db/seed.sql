@@ -2,7 +2,7 @@
             (time,
              temperature,
              humidity,
-             source)
+             location)
 VALUES      ('20130623T13:22-0500',
              34,
              52,
@@ -12,7 +12,7 @@ VALUES      ('20130623T13:22-0500',
             (time,
              temperature,
              humidity,
-             source)
+             location)
 VALUES      ('20130623T13:30-0500',
              34,
              52,
