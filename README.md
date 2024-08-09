@@ -12,20 +12,21 @@ View temperature, and humidity readings captured from Arduino on a mobile App
 
 ## Database
 
-### Table structure
+### Table structure (Readings)
 
 | Column Name | Type     |
 | ----------- | -------- |
 | Time        | DATETIME |
+| Location    | VARCHAR  |
 | Temperature | DOUBLE   |
 | Humidity    | DOUBLE   |
-| Source      | VARCHAR  |
 
 ### Example Data
 
-| Time                | Temperature | Humidity | Source |
-| ------------------- | ----------- | -------- | ------ |
-| 2024-04-01-01:12:33 | 23.3        | 57.5     | Hall   |
+| Time                | Temperature | Humidity | Location |
+| ------------------- | ----------- | -------- | ------  |
+| 2024-04-01-01:12:33 | 23.3        | 57.5     | Hall    |
+| 2024-04-01-01:12:33 | 3.0         | 50.5     | Fridge  |
 
 ### Access patterns
 
@@ -34,8 +35,20 @@ View temperature, and humidity readings captured from Arduino on a mobile App
 ```
  SELECT *
 FROM   readings
-WHERE  source = '<source>'
-ORDER  BY datetime DESC
+WHERE  location = '<location_name>'
+ORDER  BY time DESC
+LIMIT  1;  
+```
+
+
+**1. Latest reading per source**
+
+```
+ SELECT *
+FROM   readings
+WHERE  location = '<location_name>'
+and time > <from> and time < <to>
+ORDER  BY time DESC
 LIMIT  1;  
 ```
 
@@ -46,8 +59,18 @@ LIMIT  1;
 https://hub.docker.com/_/postgres
 
 ```sh
-docker run -p 5432:5432  -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+docker run  -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+
+# Optionally connect to db using psql (enter password mysecretpassword when prompted)
+psql -h localhost -U postgres
 ```
+
+#### Configure database
+
+To start working with our database, we first need to create our table based on designed schema
+(See db/schema.sql).
+
+Optionally add some sample data using db/seed.sql
 
 ### Start server
 
