@@ -39,12 +39,14 @@ func postReading(w http.ResponseWriter, req *http.Request) {
 		log.Println(err)
 		return
 	}
+	log.Println("incoming request", readings)
 
 	// insert reading based on current time
 	readings.Time = time.Now()
 	err = AddReading(readings)
 	if err != nil {
 		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
@@ -61,6 +63,7 @@ func postReading(w http.ResponseWriter, req *http.Request) {
 }
 
 func getLatest(w http.ResponseWriter, req *http.Request) {
+	enableCors(w)
 	// read request query param for source value
 	source := req.URL.Query().Get("source")
 	reading, err := GetLatest(source)
@@ -86,4 +89,8 @@ func main() {
 	http.HandleFunc("/readings/add", postReading)
 	http.HandleFunc("/readings/latest", getLatest)
 	http.ListenAndServe(":8090", nil)
+}
+
+func enableCors(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 }

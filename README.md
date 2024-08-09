@@ -55,3 +55,48 @@ docker run -p 5432:5432  -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 cd server
 go run .
 ```
+
+### Testing
+
+**1. Add Reading**
+
+Send POST request to `/readings/add`
+
+> Adds a new reading to the db, temp=21, humidity=50 for location hall
+
+```sh
+curl -X POST http://localhost:8090/readings/add -H 'Content-Type: application/json' -d '{
+	"Temperature": 21,
+	"Humidity": 50,
+	"Source": "hall"
+}'
+```
+
+**2. Get Latest Reading**
+
+Send GET requesty to '/readings/latest'
+
+```sh
+curl http://localhost:8090/readings/latest?source=hall
+```
+## Development Board
+
+Using ESP32 Plus Development board.
+
+### Setup
+
+1. Configure Arduino IDE 
+    https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html
+2. Install Board
+    Tools -> Board Manager
+3. Select Board
+    Tools -> Board -> ESP32 Dev
+4. Select Port
+
+In linux there might be permission issue on the device port
+Run the following command
+
+```sh
+# replace /ttyUSB0 with your device port name
+sudo chmod a+rw /dev/ttyUSB0
+```
