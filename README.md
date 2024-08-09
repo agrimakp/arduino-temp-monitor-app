@@ -123,3 +123,7 @@ Run the following command
 # replace /ttyUSB0 with your device port name
 sudo chmod a+rw /dev/ttyUSB0
 ```
+
+## Resources
+
+https://go.dev/doc/tutorial/database-access
