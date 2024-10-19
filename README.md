@@ -1,6 +1,8 @@
 # arduino-temp-monitor-app
 View temperature, and humidity readings captured from Arduino on a mobile App
 
+An innovative project utilizing the DHT11 sensor module to create a real-time environmental monitoring system. This system continuously tracks and displays temperature and humidity levels in the surrounding environment, providing accurate and up-to-date data. 
+
 ## Goals
 
 - [ ] Read temperature and humidity with DHT11 module
